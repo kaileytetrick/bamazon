@@ -94,15 +94,12 @@ function userInput() {
     });
 }
 
-// function that querys the database based on the selections made by the user
-
 function searchDB(id, quantity) {
 
     return mysql.query("SELECT * FROM products WHERE ?", [{ item_ID: id }])
 
         .spread(function(rows) {
 
-            // scenario where are no products with that ID left 
             if (parseInt(rows[0].stock_Quantity) < 1) {
 
                 console.log("\nI am sorry but this item is no longer in stock\n".red);
@@ -154,7 +151,6 @@ function printReceipt(totalPrice, product_name, quantity, id, newQuant) {
             console.log(quantity + " " + product_name + "(s) for " + "$".green + totalPrice + "\n================================\n".blue);
             return updateDB(id, newQuant);
         } else {
-            // send the user back to the beginning
             return shop();
         }
     });
@@ -170,13 +166,10 @@ function updateTotalSales(totalPrice, deptID) {
         });
 }
 
-// this function will update the database to reflect the new quantity within the database based on what the user wanted to buy
-
 function updateDB(id, newQuant) {
 
     return mysql.query("UPDATE products SET ? WHERE ?", [{ stock_Quantity: newQuant }, { item_ID: id }])
         .spread(function(rows) {
-            // console.log("Our inventory has been updated");
             return shop();
         }).catch(function(err) {
 
@@ -194,8 +187,6 @@ function isNumber(input) {
     }
 }
 
-// function to check to see if user input is Y or N all else are rejected
-
 function isLetter(input) {
 
     if (input === 'Y' || input === 'y' || input === 'n' || input === 'N') {
@@ -206,5 +197,4 @@ function isLetter(input) {
     }
 }
 
-//=== RUN BAMAZON =======
 showProducts();
